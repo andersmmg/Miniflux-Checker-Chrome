@@ -13,8 +13,12 @@ function loadOptions() {
 }
 
 chrome.action.onClicked.addListener((tab) => {
-  chrome.tabs.create({ url: minifluxUrl + '/unread' });
+  openPage()
 })
+
+function openPage() {
+  chrome.tabs.create({ url: minifluxUrl + '/unread' });
+}
 
 let refreshTimeout: ReturnType<typeof setTimeout>
 function refresh() {
@@ -68,6 +72,7 @@ function updateIcon(unreadCount: number) {
 }
 
 chrome.runtime.onInstalled.addListener(async () => {
+  chrome.runtime.openOptionsPage()
   chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
     if (msg.action === "updateIcon") {
       updateIcon(msg.value)
